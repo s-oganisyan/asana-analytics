@@ -1,12 +1,9 @@
-import dotenv from 'dotenv';
 import { createLogger, format, Logger, transports } from 'winston';
 
 const { combine, timestamp, printf } = format;
 const myFormat = printf(({ level, label, message, timestamp }) => {
   return `${timestamp} ${level}: [${label}] ${message}`;
 });
-
-dotenv.config();
 
 export default (): Logger => {
   return createLogger({
