@@ -10,9 +10,9 @@ export default (app: Router): void => {
   route.get('/tasks', async (req: Request, res: Response) => {
     try {
       const asanaApiServiceInstance = Container.get(AsanaApiService);
-      const ProjectsAndTasks = await asanaApiServiceInstance.getProjectsTasks();
+      const tasksOfProjects = await asanaApiServiceInstance.getProjectsTasks();
 
-      return res.status(201).json(ProjectsAndTasks);
+      return res.status(201).json(tasksOfProjects);
     } catch (e) {
       return res.status(500).json(e);
     }

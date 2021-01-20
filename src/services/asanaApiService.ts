@@ -3,7 +3,7 @@ import config from '../config';
 import Logger from '../logger';
 import dateService from './dateService';
 import { Container, Service } from 'typedi';
-import { IResponseTask, IApiEntity, IGetTaskListParams, IProject } from '../interfaces/asanaApi';
+import { IResponseTask, IResponseFullTask, IApiEntity, IGetTaskListParams, IProject } from '../interfaces/asanaApi';
 
 @Service()
 export default class EntitiesService {
@@ -12,7 +12,7 @@ export default class EntitiesService {
   dateService: dateService;
 
   constructor() {
-    this.client = asana.Client.create().useAccessToken(config.ASANA_PERSONAL_ACCESS_TOKEN);
+    this.client = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
     this.dateService = Container.get(dateService);
   }
 
@@ -34,8 +34,18 @@ export default class EntitiesService {
 
   private async getProjectList(): Promise<IApiEntity[]> {
     try {
-      const projects = await this.client.projects.getProjects({ workspace: config.WORKSPACE, opt_pretty: true });
+      const projects = await this.client.projects.getProjects({ workspace: config.ASANA.WORKSPACE, opt_pretty: true });
       return projects.data;
+    } catch (error) {
+      Logger.error(error);
+      throw error;
+    }
+  }
+
+  private async getTaskById(gid: string): Promise<IResponseFullTask> {
+    try {
+      const task = await this.client.tasks.getTask(gid, { opt_pretty: true });
+      return task;
     } catch (error) {
       Logger.error(error);
       throw error;
@@ -49,7 +59,7 @@ export default class EntitiesService {
       const params = { project: project.gid } as IGetTaskListParams;
 
       if (!isAllTasks) {
-        params.modified_since = this.dateService.getDateForModifyTasks();
+        params.modified_since = this.dateService.getDateOfLastRequest();
       }
 
       const tasks = await this.getTasks(params);
