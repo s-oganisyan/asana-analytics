@@ -1,5 +1,6 @@
 import express from 'express';
 import Logger from './logger';
+import config from './config';
 import loaders from './loaders';
 
 async function startServer(): Promise<void> {
@@ -10,8 +11,8 @@ async function startServer(): Promise<void> {
     Logger.error(e);
   }
 
-  app.listen(process.env.PORT, () => {
-    Logger.info(`port: ${process.env.PORT ? process.env.PORT : 3000}`);
+  app.listen(config.PORT, () => {
+    Logger.info(`port: ${config.PORT}`);
   });
 }
 
