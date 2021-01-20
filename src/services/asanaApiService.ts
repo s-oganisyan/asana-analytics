@@ -1,5 +1,6 @@
 import asana from 'asana';
 import config from '../config';
+import Logger from '../logger';
 import { Service } from 'typedi';
 import { IResponseTask, IResponseFullTask, IApiEntity, IGetTaskListPamams } from '../interfaces/asanaApi';
 
@@ -13,52 +14,40 @@ export default class EntitiesService {
   public async getTasks(params: IGetTaskListPamams): Promise<IResponseTask[]> {
     try {
       console.log('typeof( this.client )', this.client);
-      const tasks = this.client.tasks.getTasks({ ...params, opt_pretty: true }).then((result) => {
-        console.log(result);
-        return result.data;
-      });
+      const tasks = await this.client.tasks.getTasks({ ...params, opt_pretty: true });
       return tasks;
     } catch (error) {
-      console.error(error);
+      Logger.error(error);
       throw error;
     }
   }
 
   public async getTaskById(gid: string): Promise<IResponseFullTask> {
     try {
-      const task = this.client.tasks.getTask(gid, { opt_pretty: true }).then((result) => {
-        console.log(result);
-        return result;
-      });
+      const task = await this.client.tasks.getTask(gid, { opt_pretty: true });
       return task;
     } catch (error) {
-      console.error(error);
+      Logger.error(error);
       throw error;
     }
   }
 
   public async getUserList(workspace: string): Promise<IApiEntity> {
     try {
-      const users = this.client.users.getUsers({ workspace, opt_pretty: true }).then((result) => {
-        return result.data;
-      });
-      return users;
+      const users = await this.client.users.getUsers({ workspace, opt_pretty: true });
+      return users.data;
     } catch (error) {
-      console.error(error);
+      Logger.error(error);
       throw error;
     }
   }
 
   public async getProjectList(workspace: string): Promise<IApiEntity> {
     try {
-      const projects = this.client.projects
-        .getProjects({ workspace, opt_pretty: true })
-        .then((result: { data: IApiEntity[] }) => {
-          return result.data;
-        });
-      return projects;
+      const projects = await this.client.projects.getProjects({ workspace, opt_pretty: true });
+      return projects.data;
     } catch (error) {
-      console.error(error);
+      Logger.error(error);
       throw error;
     }
   }
