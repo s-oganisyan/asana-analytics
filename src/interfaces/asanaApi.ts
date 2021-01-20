@@ -56,5 +56,10 @@ export interface IGetTaskListParams {
   section?: string;
   workspace?: string;
   completed_since?: string;
-  modified_since?: string;
+  modified_since?: Date;
+}
+
+export interface IProject {
+  projectName: string;
+  tasks: IResponseTask[];
 }
