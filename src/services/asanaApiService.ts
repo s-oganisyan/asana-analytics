@@ -2,7 +2,7 @@ import asana from 'asana';
 import config from '../config';
 import Logger from '../logger';
 import { Service } from 'typedi';
-import { IResponseTask, IResponseFullTask, IApiEntity, IGetTaskListPamams } from '../interfaces/asanaApi';
+import { IResponseTask, IResponseFullTask, IApiEntity, IGetTaskListParams } from '../interfaces/asanaApi';
 
 @Service()
 export default class EntitiesService {
@@ -11,9 +11,8 @@ export default class EntitiesService {
     this.client = asana.Client.create().useAccessToken(config.ASANA_PERSONAL_ACCESS_TOKEN);
   }
 
-  public async getTasks(params: IGetTaskListPamams): Promise<IResponseTask[]> {
+  public async getTasks(params: IGetTaskListParams): Promise<IResponseTask[]> {
     try {
-      console.log('typeof( this.client )', this.client);
       const tasks = await this.client.tasks.getTasks({ ...params, opt_pretty: true });
       return tasks;
     } catch (error) {
@@ -42,7 +41,7 @@ export default class EntitiesService {
     }
   }
 
-  public async getProjectList(workspace: string): Promise<IApiEntity> {
+  public async getProjectList(workspace: string): Promise<IApiEntity[]> {
     try {
       const projects = await this.client.projects.getProjects({ workspace, opt_pretty: true });
       return projects.data;

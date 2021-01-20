@@ -50,7 +50,7 @@ interface IMembership {
   section: IApiEntity;
 }
 
-export interface IGetTaskListPamams {
+export interface IGetTaskListParams {
   assignee?: string;
   project?: string;
   section?: string;

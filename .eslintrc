@@ -11,7 +11,8 @@
         "pretty-imports/sorted": "warn",
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/camelcase": "off"
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-var-requires": "off"
     },
     "extends": [
         "eslint:recommended",
