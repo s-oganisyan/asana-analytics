@@ -1,5 +1,5 @@
 import logger from '../config/logger';
-import LoggerConstant from "./loggerConstant";
+import LoggerConstant from './loggerConstant';
 const winston = logger();
 
 export default class Logger {
