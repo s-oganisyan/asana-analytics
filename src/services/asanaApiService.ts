@@ -1,17 +1,28 @@
 import asana from 'asana';
 import config from '../config';
 import Logger from '../logger';
-import { Service } from 'typedi';
-import { IResponseTask, IResponseFullTask, IApiEntity, IGetTaskListParams } from '../interfaces/asanaApi';
+import dateService from './dateService';
+import { Container, Service } from 'typedi';
+import { IResponseTask, IApiEntity, IGetTaskListParams, IProject } from '../interfaces/asanaApi';
 
 @Service()
 export default class EntitiesService {
   client: any;
+
+  dateService: dateService;
+
   constructor() {
     this.client = asana.Client.create().useAccessToken(config.ASANA_PERSONAL_ACCESS_TOKEN);
+    this.dateService = Container.get(dateService);
   }
 
-  public async getTasks(params: IGetTaskListParams): Promise<IResponseTask[]> {
+  public async getProjectsTasks(isAllTasks = true): Promise<IProject[]> {
+    const projects = await this.getProjectList();
+
+    return this.dataProjects(projects, isAllTasks);
+  }
+
+  private async getTasks(params: IGetTaskListParams): Promise<IResponseTask[]> {
     try {
       const tasks = await this.client.tasks.getTasks({ ...params, opt_pretty: true });
       return tasks;
@@ -21,33 +32,30 @@ export default class EntitiesService {
     }
   }
 
-  public async getTaskById(gid: string): Promise<IResponseFullTask> {
+  private async getProjectList(): Promise<IApiEntity[]> {
     try {
-      const task = await this.client.tasks.getTask(gid, { opt_pretty: true });
-      return task;
-    } catch (error) {
-      Logger.error(error);
-      throw error;
-    }
-  }
-
-  public async getUserList(workspace: string): Promise<IApiEntity> {
-    try {
-      const users = await this.client.users.getUsers({ workspace, opt_pretty: true });
-      return users.data;
-    } catch (error) {
-      Logger.error(error);
-      throw error;
-    }
-  }
-
-  public async getProjectList(workspace: string): Promise<IApiEntity[]> {
-    try {
-      const projects = await this.client.projects.getProjects({ workspace, opt_pretty: true });
+      const projects = await this.client.projects.getProjects({ workspace: config.WORKSPACE, opt_pretty: true });
       return projects.data;
     } catch (error) {
       Logger.error(error);
       throw error;
     }
+  }
+
+  private async dataProjects(projects, isAllTasks: boolean): Promise<IProject[]> {
+    const projectData: IProject[] = [];
+
+    for (const project of projects) {
+      const params = { project: project.gid } as IGetTaskListParams;
+
+      if (!isAllTasks) {
+        params.modified_since = this.dateService.getDateForModifyTasks();
+      }
+
+      const tasks = await this.getTasks(params);
+      projectData.push({ projectName: project.name, tasks } as IProject);
+    }
+
+    return projectData;
   }
 }

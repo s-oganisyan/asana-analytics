@@ -13,4 +13,6 @@ if (envFound.error) {
 export default {
   PORT: process.env.PORT ? process.env.PORT : '3000',
   ASANA_PERSONAL_ACCESS_TOKEN: process.env.ASANA_PERSONAL_ACCESS_TOKEN,
+  WORKSPACE: process.env.WORKSPACE,
+  TIME_RESPONSE_DATA: 12,
 };
