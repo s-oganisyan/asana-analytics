@@ -1,3 +1,5 @@
+import Logger from '../logger';
+
 const CronJob = require('cron').CronJob;
 
 export default class CronJobs {
@@ -5,7 +7,7 @@ export default class CronJobs {
     const job = new CronJob(
       '0 0 */12 * * *',
       () => {
-        console.log('cron is work');
+        Logger.info('cron is work');
       },
       null,
       true,
