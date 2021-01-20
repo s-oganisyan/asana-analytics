@@ -1,4 +1,5 @@
 import logger from '../config/logger';
+import LoggerConstant from "./loggerConstant";
 const winston = logger();
 
 export default class Logger {
@@ -6,7 +7,7 @@ export default class Logger {
     winston.log({
       message: error,
       label: this.getFixedPathFile(),
-      level: 'error',
+      level: LoggerConstant.LOG_LEVEL_ERROR,
     });
   }
 
@@ -14,15 +15,15 @@ export default class Logger {
     winston.log({
       message,
       label: this.getFixedPathFile(),
-      level: 'info',
+      level: LoggerConstant.LOG_LEVEL_INFO,
     });
   }
 
   static debug(message: string): void {
     winston.log({
       message: `###${message}`,
-      level: 'debug',
       label: this.getFixedPathFile(),
+      level: LoggerConstant.LOG_LEVEL_DEBUG,
     });
   }
 
