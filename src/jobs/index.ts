@@ -1,0 +1,19 @@
+import Logger from '../logger';
+
+const CronJob = require('cron').CronJob;
+
+export default class CronJobs {
+  public async handler(): Promise<void> {
+    const job = new CronJob(
+      '0 0 */12 * * *',
+      () => {
+        Logger.info('cron is work');
+      },
+      null,
+      true,
+      'America/Los_Angeles'
+    );
+
+    job.start();
+  }
+}

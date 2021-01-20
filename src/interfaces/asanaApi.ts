@@ -55,6 +55,6 @@ export interface IGetTaskListParams {
   project?: string;
   section?: string;
   workspace?: string;
-  complited_since?: string;
+  completed_since?: string;
   modified_since?: string;
 }
