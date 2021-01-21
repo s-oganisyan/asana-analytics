@@ -13,6 +13,8 @@ if (envFound.error) {
 export default {
   PORT: process.env.PORT ? process.env.PORT : '3000',
   TIME_RESPONSE_DATA: 12,
+  LOG_LEVEL_FILE: process.env.LOG_LEVEL_FILE,
+  LOG_LEVEL_CONSOLE: process.env.LOG_LEVEL_CONSOLE,
   ASANA: {
     PERSONAL_ACCESS_TOKEN: process.env.ASANA_PERSONAL_ACCESS_TOKEN,
     WORKSPACE: process.env.WORKSPACE,
