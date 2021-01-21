@@ -2,12 +2,11 @@ import asana from 'asana';
 import config from '../config';
 import Logger from '../logger';
 import DateService from './dateService';
-import IAsanaRequestService from '../interfaces/IAsanaRequestService';
 import { Container, Service } from 'typedi';
 import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../interfaces/asanaApi';
 
 @Service()
-export default class AsanaRequestService implements IAsanaRequestService {
+export default class AsanaRequestService {
   private client: asana.Client;
 
   private dateService: DateService;
