@@ -6,10 +6,14 @@ export default () => {
   const asanaMock = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
   asanaMock.tasks.getTasks = () => {
     return {
-      gid: '1111111111',
-      name: 'testName',
-      resource_type: 'task',
-    } as IApiEntity;
+      data: [
+        {
+          gid: '1111111111',
+          name: 'testName',
+          resource_type: 'task',
+        } as IApiEntity,
+      ],
+    };
   };
 
   asanaMock.projects.getProjects = async () => {

@@ -1,5 +1,4 @@
 import asana from 'asana';
-import config from '../config';
 import DateService from './dateService';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
@@ -11,8 +10,7 @@ export default class AsanaMakeDataProjects {
 
   private asanaRequestService: AsanaRequestService;
 
-  constructor() {
-    const client = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
+  constructor(client: asana.Client) {
     this.asanaRequestService = new AsanaRequestService(client);
     this.dateService = Container.get(DateService);
   }
@@ -34,6 +32,7 @@ export default class AsanaMakeDataProjects {
       }
 
       const tasks = await this.asanaRequestService.getTasks(params);
+
       projectData.push({ projectName: project.name, tasks } as IProject);
     }
 
@@ -42,6 +41,7 @@ export default class AsanaMakeDataProjects {
 
   private async getFullTasks(dataProjects: IProject[]): Promise<IProject[]> {
     const fullTasks: IResponseFullTask[] = [];
+
     for (const dataProject of dataProjects) {
       for (let task of dataProject.tasks.data) {
         task = await this.asanaRequestService.getTaskById(task.gid);
