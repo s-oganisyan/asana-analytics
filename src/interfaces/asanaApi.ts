@@ -1,9 +1,3 @@
-export interface IResponseTask {
-  gid: string;
-  name: string;
-  resource_type: string;
-}
-
 export interface IResponseFullTask {
   gid: string;
   assignee: IApiEntity;
@@ -61,5 +55,8 @@ export interface IGetTaskListParams {
 
 export interface IProject {
   projectName: string;
-  tasks: IResponseTask[];
+  tasks: ITasks;
+}
+export interface ITasks {
+  data: IApiEntity[];
 }

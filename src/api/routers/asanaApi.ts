@@ -1,4 +1,4 @@
-import AsanaApiService from '../../services/asanaApiService';
+import AsanaMakeDataProjects from '../../services/asanaMakeDataProjects';
 import { Container } from 'typedi';
 import { Router, Request, Response } from 'express';
 
@@ -9,8 +9,8 @@ export default (app: Router): void => {
 
   route.get('/tasks', async (req: Request, res: Response) => {
     try {
-      const asanaApiServiceInstance = Container.get(AsanaApiService);
-      const tasksOfProjects = await asanaApiServiceInstance.getProjectsTasks();
+      const asanaMakeDataProjects = Container.get(AsanaMakeDataProjects);
+      const tasksOfProjects = await asanaMakeDataProjects.getProjectsTasks();
 
       return res.status(201).json(tasksOfProjects);
     } catch (e) {
