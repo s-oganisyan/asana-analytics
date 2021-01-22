@@ -2,7 +2,7 @@ import asana from 'asana';
 import DateService from './dateService';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
-import { IResponseFullTask, IApiEntity, IGetTaskListParams, IProject } from '../interfaces/asanaApi';
+import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 @Service()
 export default class AsanaMakeDataProjects {
@@ -39,21 +39,26 @@ export default class AsanaMakeDataProjects {
       projectData.push({ projectName: project.name, tasks } as IProject);
     }
 
-    return await this.replacementTasks(projectData);
+    return await this.replacementTasksInProjects(projectData);
   }
 
-  private async replacementTasks(dataProjects: IProject[]): Promise<IProject[]> {
-    const fullTasks: IResponseFullTask[] = [];
-
+  private async replacementTasksInProjects(dataProjects: IProject[]): Promise<IProject[]> {
     for (const dataProject of dataProjects) {
-      for (let task of dataProject.tasks.data) {
-        task = await this.asanaRequestService.getTaskById(task.gid);
-        fullTasks.push(task as IResponseFullTask);
-      }
-      dataProject.tasks.data = fullTasks;
+      dataProject.tasks.data = await this.getFullTasksForProject(dataProject);
     }
 
     return dataProjects;
+  }
+
+  private async getFullTasksForProject(dataProject: IProject): Promise<IResponseFullTask[]> {
+    const fullTasks: IResponseFullTask[] = [];
+
+    for (let task of dataProject.tasks.data) {
+      task = await this.asanaRequestService.getTaskById(task.gid);
+      fullTasks.push(task as IResponseFullTask);
+    }
+
+    return fullTasks;
   }
 
   private createTaskListParams(isAllTasks: boolean): IGetTaskListParams {
