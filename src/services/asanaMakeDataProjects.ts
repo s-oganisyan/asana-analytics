@@ -22,17 +22,14 @@ export default class AsanaMakeDataProjects {
   }
 
   private async dataProjects(projects: IApiEntity[], isAllTasks: boolean): Promise<IProject[]> {
-    const projectData: IProject[] = [];
     const params = this.createTaskListParams(isAllTasks);
 
-    return await this.fillTheDataProject(projects, params, projectData);
+    return await this.fillTheDataProject(projects, params);
   }
 
-  private async fillTheDataProject(
-    projects: IApiEntity[],
-    params: IGetTaskListParams,
-    projectData: IProject[]
-  ): Promise<IProject[]> {
+  private async fillTheDataProject(projects: IApiEntity[], params: IGetTaskListParams): Promise<IProject[]> {
+    const projectData: IProject[] = [];
+
     for (const project of projects) {
       params.project = project.gid;
       const tasks = await this.asanaRequestService.getTasks(params);
