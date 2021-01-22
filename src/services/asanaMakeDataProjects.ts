@@ -23,16 +23,19 @@ export default class AsanaMakeDataProjects {
 
   private async dataProjects(projects: IApiEntity[], isAllTasks: boolean): Promise<IProject[]> {
     const projectData: IProject[] = [];
+    const params = this.createTaskListParams(isAllTasks);
 
+    return await this.replacementTasks(projects, params, projectData);
+  }
+
+  private async replacementTasks(
+    projects: IApiEntity[],
+    params: IGetTaskListParams,
+    projectData: IProject[]
+  ): Promise<IProject[]> {
     for (const project of projects) {
-      const params = { project: project.gid } as IGetTaskListParams;
-
-      if (!isAllTasks) {
-        params.modified_since = this.dateService.getDateOfLastRequest();
-      }
-
+      params.project = project.gid;
       const tasks = await this.asanaRequestService.getTasks(params);
-
       projectData.push({ projectName: project.name, tasks } as IProject);
     }
 
@@ -51,5 +54,15 @@ export default class AsanaMakeDataProjects {
     }
 
     return dataProjects;
+  }
+
+  private createTaskListParams(isAllTasks: boolean): IGetTaskListParams {
+    const params = {} as IGetTaskListParams;
+
+    if (!isAllTasks) {
+      params.modified_since = this.dateService.getDateOfLastRequest();
+    }
+
+    return params;
   }
 }
