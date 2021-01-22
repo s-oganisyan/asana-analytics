@@ -7,14 +7,16 @@ export default class CronJobs {
   public async handler(): Promise<void> {
     const job = new CronJob(
       `0 0 */${config.TIME_RESPONSE_DATA} * * *`,
-      () => {
-        Logger.info('cron is work');
-      },
+      this.cronCallBack,
       null,
       true,
       'America/Los_Angeles'
     );
 
     job.start();
+  }
+
+  private cronCallBack() {
+    Logger.info('cron is work');
   }
 }
