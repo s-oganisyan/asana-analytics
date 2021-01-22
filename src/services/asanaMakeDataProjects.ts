@@ -25,10 +25,10 @@ export default class AsanaMakeDataProjects {
     const projectData: IProject[] = [];
     const params = this.createTaskListParams(isAllTasks);
 
-    return await this.replacementTasks(projects, params, projectData);
+    return await this.fillTheDataProject(projects, params, projectData);
   }
 
-  private async replacementTasks(
+  private async fillTheDataProject(
     projects: IApiEntity[],
     params: IGetTaskListParams,
     projectData: IProject[]
@@ -39,10 +39,10 @@ export default class AsanaMakeDataProjects {
       projectData.push({ projectName: project.name, tasks } as IProject);
     }
 
-    return await this.getFullTasks(projectData);
+    return await this.replacementTasks(projectData);
   }
 
-  private async getFullTasks(dataProjects: IProject[]): Promise<IProject[]> {
+  private async replacementTasks(dataProjects: IProject[]): Promise<IProject[]> {
     const fullTasks: IResponseFullTask[] = [];
 
     for (const dataProject of dataProjects) {
