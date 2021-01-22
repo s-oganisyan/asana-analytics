@@ -2,9 +2,9 @@ import asana from 'asana';
 import config from '../../src/config';
 import { IApiEntity, ITasks, IResponseFullTask } from '../../src/interfaces/asanaApi';
 
-export default () => {
+export default (): asana.Client => {
   const asanaMock = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
-  asanaMock.tasks.getTasks = () => {
+  asanaMock.tasks.getTasks = async (): Promise<ITasks> => {
     return {
       data: [
         {
@@ -16,7 +16,7 @@ export default () => {
     };
   };
 
-  asanaMock.projects.getProjects = async () => {
+  asanaMock.projects.getProjects = async (): Promise<ITasks> => {
     return {
       data: [
         {
@@ -28,7 +28,7 @@ export default () => {
     } as ITasks;
   };
 
-  asanaMock.tasks.getTask = async () => {
+  asanaMock.tasks.getTask = async (): Promise<IResponseFullTask> => {
     return {
       gid: '1111111111',
       name: 'testName',
