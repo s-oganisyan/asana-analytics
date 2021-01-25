@@ -5,9 +5,8 @@ import { IApiEntity, IProject } from '../interfaces/asanaApi';
 
 export default class CreateCsvService {
   public createCsv(projectTasks: IProject[], CsvNameProjectsTaskGid: string, CsvNameTasks: string): void {
-    const projectsCsv = fs.createWriteStream(path.resolve(__dirname, `../../csv/${CsvNameProjectsTaskGid}.csv`), {
-      flags: 'a',
-    });
+    this.createCsvDirectory(path.resolve(__dirname, '../../csv'));
+    const projectsCsv = fs.createWriteStream(path.resolve(__dirname, `../../csv/${CsvNameProjectsTaskGid}.csv`));
     const tasksCsv = fs.createWriteStream(path.resolve(__dirname, `../../csv/${CsvNameTasks}.csv`));
 
     this.createCsvProjectsTasksGidAndTasks(projectTasks, projectsCsv, tasksCsv);
@@ -41,5 +40,11 @@ export default class CreateCsvService {
   private addHeaderCsv(projectTasks: IProject[], projectsCsv: Writable, tasksCsv: Writable) {
     projectsCsv.write(`project_name;task_gid \n`);
     tasksCsv.write(`${this.getTaskPropertyNames(projectTasks[0].tasks.data[0])} \n`);
+  }
+
+  private createCsvDirectory(path: string) {
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path);
+    }
   }
 }
