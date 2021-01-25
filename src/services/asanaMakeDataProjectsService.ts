@@ -5,7 +5,7 @@ import { Container, Service } from 'typedi';
 import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 @Service()
-export default class AsanaMakeDataProjects {
+export default class AsanaMakeDataProjectsService {
   private dateService: DateService;
 
   private asanaRequestService: AsanaRequestService;

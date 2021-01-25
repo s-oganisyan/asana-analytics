@@ -1,8 +1,8 @@
 import asanaMock from '../mock/asanaMock';
-import AsanaMakeDataProjects from '../../src/services/asanaMakeDataProjects';
+import AsanaMakeDataProjectsService from '../../src/services/asanaMakeDataProjectsService';
 
 const asanaClient = asanaMock();
-const asanaRequestService = new AsanaMakeDataProjects(asanaClient);
+const asanaRequestService = new AsanaMakeDataProjectsService(asanaClient);
 
 test('getProjectsTasks', async () => {
   const projectsTasks = await asanaRequestService.getProjectsTasks();
