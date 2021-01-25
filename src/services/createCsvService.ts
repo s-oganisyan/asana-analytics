@@ -5,10 +5,10 @@ import { IApiEntity, IProject } from '../interfaces/asanaApi';
 
 export default class CreateCsvService {
   public createCsv(projectTasks: IProject[], CsvNameProjectsTaskGid: string, CsvNameTasks: string): void {
-    const projectsCsv = fs.createWriteStream(path.resolve(__dirname, `../../${CsvNameProjectsTaskGid}.csv`), {
+    const projectsCsv = fs.createWriteStream(path.resolve(__dirname, `../../csv/${CsvNameProjectsTaskGid}.csv`), {
       flags: 'a',
     });
-    const tasksCsv = fs.createWriteStream(path.resolve(__dirname, `../../${CsvNameTasks}.csv`));
+    const tasksCsv = fs.createWriteStream(path.resolve(__dirname, `../../csv/${CsvNameTasks}.csv`));
 
     this.createCsvProjectsTasksGidAndTasks(projectTasks, projectsCsv, tasksCsv);
   }
