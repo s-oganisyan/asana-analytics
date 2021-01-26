@@ -123,6 +123,16 @@ export default class WriteCsvService {
         `${user.gid.trim()};${user.name.trim()};${user.resource_type.trim()} \n`
       );
     });
+
+    if (!task.assignee) {
+      return;
+    }
+    this.checkExistRecordAndWrite(
+      this.users,
+      usersCsv,
+      task.assignee.gid,
+      `${task.assignee.gid.trim()};${task.assignee.name.trim()};${task.assignee.resource_type.trim()} \n`
+    );
   }
 
   private writeCsvWorkspaces(task: IResponseFullTask, workspacesCsv: Writable): void {
