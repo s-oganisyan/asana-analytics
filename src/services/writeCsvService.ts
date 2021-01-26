@@ -5,7 +5,7 @@ import { Writable } from 'stream';
 import { IApiEntity, IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 export default class WriteCsvService {
-  private readonly dirName;
+  private readonly dirName: string;
 
   private users: string[] = [];
 
@@ -64,10 +64,6 @@ export default class WriteCsvService {
     });
   }
 
-  private getTaskPropertyNames(task: IApiEntity): string {
-    return Object.keys(task).join(';');
-  }
-
   private getTaskProperty(task: IApiEntity): string {
     let properties = '';
 
@@ -94,6 +90,10 @@ export default class WriteCsvService {
     workspacesCsv.write(this.workspaceFields);
     tagsCsv.write(this.tagFields);
     membershipsCsv.write(this.membershipFields);
+  }
+
+  private getTaskPropertyNames(task: IApiEntity): string {
+    return Object.keys(task).join(';');
   }
 
   private createCsvDirectory(path: string) {
