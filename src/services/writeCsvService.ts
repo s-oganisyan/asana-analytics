@@ -5,23 +5,29 @@ import { Writable } from 'stream';
 import { IApiEntity, IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 export default class WriteCsvService {
+  private readonly dirName;
+
   private users: string[] = [];
 
   private workspaces: string[] = [];
 
-  readonly projectFields: string = 'project_name;task_gid \n';
+  private readonly projectFields: string = 'project_name;task_gid \n';
 
-  readonly userFields: string = 'gid;name;resource_type \n';
+  private readonly userFields: string = 'gid;name;resource_type \n';
 
-  readonly workspaceFields: string = 'gid;name;resource_type \n';
+  private readonly workspaceFields: string = 'gid;name;resource_type \n';
 
-  readonly tagFields: string = 'task_gid;gid;name;resource_type \n';
+  private readonly tagFields: string = 'task_gid;gid;name;resource_type \n';
 
-  readonly membershipFields: string =
+  private readonly membershipFields: string =
     'task_gid;project_gid;project_name;project_resource_type;section_gid;section_name;section_resource_type \n';
 
-  public createCsv(projectTasks: IProject[], dirName = 'csv'): void {
-    this.createCsvDirectory(path.resolve(__dirname, `../../${dirName}`));
+  constructor(dirName = 'csv') {
+    this.dirName = dirName;
+  }
+
+  public createCsv(projectTasks: IProject[]): void {
+    this.createCsvDirectory(path.resolve(__dirname, `../../${this.dirName}`));
 
     this.createCsvData(
       projectTasks,
@@ -101,10 +107,14 @@ export default class WriteCsvService {
   }
 
   private getPath(fileName: string): string {
-    return path.resolve(__dirname, `../../csv/${fileName}.csv`);
+    return path.resolve(__dirname, `../../${this.dirName}/${fileName}.csv`);
   }
 
   private writeCsvUsers(task: IResponseFullTask, usersCsv: Writable): void {
+    if (!task.followers) {
+      return;
+    }
+
     task.followers.forEach((user) => {
       this.checkExistRecordAndWrite(
         this.users,
@@ -116,6 +126,10 @@ export default class WriteCsvService {
   }
 
   private writeCsvWorkspaces(task: IResponseFullTask, workspacesCsv: Writable): void {
+    if (!task.workspace) {
+      return;
+    }
+
     this.checkExistRecordAndWrite(
       this.workspaces,
       workspacesCsv,
@@ -125,6 +139,10 @@ export default class WriteCsvService {
   }
 
   private writeCsvMemberships(task: IResponseFullTask, membershipsCsv: Writable): void {
+    if (!task.memberships) {
+      return;
+    }
+
     task.memberships.forEach((memberships) => {
       membershipsCsv.write(
         `${task.gid};${memberships.project.gid};${memberships.project.name};${memberships.project.resource_type};${memberships.section.gid};${memberships.section.name};${memberships.section.resource_type} \n`
@@ -133,6 +151,10 @@ export default class WriteCsvService {
   }
 
   private writeCsvTags(task: IResponseFullTask, tagsCsv: Writable): void {
+    if (!task.tags) {
+      return;
+    }
+
     task.tags.forEach((tags) => {
       tagsCsv.write(`${task.gid};${tags.gid};${tags.name};${tags.resource_type} \n`);
     });
