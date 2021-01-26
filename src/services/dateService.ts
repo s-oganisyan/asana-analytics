@@ -6,4 +6,10 @@ export default class DateService {
     const milliseconds = date.setHours(date.getHours() - config.TIME_RESPONSE_DATA);
     return new Date(milliseconds);
   }
+
+  public static changeTimezone(date: string): Date {
+    const currentDate = new Date(date);
+    currentDate.setHours(currentDate.getHours() + 3);
+    return currentDate;
+  }
 }

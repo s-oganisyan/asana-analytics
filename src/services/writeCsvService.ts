@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import DateService from './dateService';
 import ParseStringService from './parseStringService';
 import { Writable } from 'stream';
 import { IProject, IResponseFullTask } from '../interfaces/asanaApi';
@@ -54,6 +55,7 @@ export default class WriteCsvService {
     projectTasks.forEach((project) => {
       project.tasks.data.forEach((task) => {
         projectsCsv.write(`${project.projectName};${task.gid} \n`);
+        this.fixPropertyDateTask(task);
         tasksCsv.write(`${this.getTaskProperty(task)} \n`);
 
         this.writeCsvUsers(task, usersCsv);
@@ -175,5 +177,14 @@ export default class WriteCsvService {
       array.push(gid);
       writeStream.write(writeString);
     }
+  }
+
+  fixPropertyDateTask(task: IResponseFullTask): void {
+    const properties = Object.keys(task);
+    properties.forEach((property) => {
+      if (task[property] != null && (property.endsWith('_at') || property.endsWith('_on'))) {
+        task[property] = DateService.changeTimezone(task[property]);
+      }
+    });
   }
 }
