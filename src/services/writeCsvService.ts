@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import ParseStringService from './parseStringService';
 import { Writable } from 'stream';
-import { IApiEntity, IProject, IResponseFullTask } from '../interfaces/asanaApi';
+import { IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 export default class WriteCsvService {
   private readonly dirName: string;
@@ -64,7 +64,7 @@ export default class WriteCsvService {
     });
   }
 
-  private getTaskProperty(task: IApiEntity): string {
+  private getTaskProperty(task: IResponseFullTask): string {
     let properties = '';
 
     for (const key in task) {
@@ -92,7 +92,7 @@ export default class WriteCsvService {
     membershipsCsv.write(this.membershipFields);
   }
 
-  private getTaskPropertyNames(task: IApiEntity): string {
+  private getTaskPropertyNames(task: IResponseFullTask): string {
     return Object.keys(task).join(';');
   }
 
