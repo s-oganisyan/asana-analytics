@@ -1,6 +1,6 @@
 import asana from 'asana';
 import config from '../../src/config';
-import { IApiEntity, ITasks, IResponseFullTask } from '../../src/interfaces/asanaApi';
+import { ITasks, IResponseFullTask } from '../../src/interfaces/asanaApi';
 
 export default (): asana.Client => {
   const asanaMock = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
@@ -11,7 +11,7 @@ export default (): asana.Client => {
           gid: '1111111111',
           name: 'testName',
           resource_type: 'task',
-        } as IApiEntity,
+        } as IResponseFullTask,
       ],
     };
   };

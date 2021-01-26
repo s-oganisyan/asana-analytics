@@ -16,7 +16,7 @@ export default (app: Router): void => {
       const tasksOfProjects = await asanaMakeDataProjects.getProjectsTasks();
 
       const jsonTocsv = new CreateCsvService();
-      jsonTocsv.createCsv(tasksOfProjects, 'project', 'tasks');
+      jsonTocsv.createCsv(tasksOfProjects);
 
       return res.status(201).json(tasksOfProjects);
     } catch (e) {
