@@ -20,8 +20,8 @@ export default class WriteCsvService {
   readonly membershipFields: string =
     'task_gid;project_gid;project_name;project_resource_type;section_gid;section_name;section_resource_type \n';
 
-  public createCsv(projectTasks: IProject[]): void {
-    this.createCsvDirectory(path.resolve(__dirname, '../../csv'));
+  public createCsv(projectTasks: IProject[], dirName = 'csv'): void {
+    this.createCsvDirectory(path.resolve(__dirname, `../../${dirName}`));
 
     this.createCsvData(
       projectTasks,
