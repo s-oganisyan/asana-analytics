@@ -4,7 +4,12 @@ test('removeSymbolsInString string', () => {
   const string = 'test,\nstring;';
   const parseString = parseStringService.removeSymbolsInString(string);
 
-  expect(parseString).toEqual(string.split(/,|\n|;/).join(' '));
+  expect(parseString).toEqual(
+    string
+      .split(/,|\n|;/)
+      .join(' ')
+      .trim()
+  );
 });
 
 test('removeSymbolsInString object', () => {

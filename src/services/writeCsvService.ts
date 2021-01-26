@@ -120,7 +120,7 @@ export default class WriteCsvService {
         this.users,
         usersCsv,
         user.gid,
-        `${user.gid};${user.name};${user.resource_type} \n`
+        `${user.gid.trim()};${user.name.trim()};${user.resource_type.trim()} \n`
       );
     });
   }
@@ -134,7 +134,7 @@ export default class WriteCsvService {
       this.workspaces,
       workspacesCsv,
       task.workspace.gid,
-      `${task.workspace.gid};${task.workspace.name};${task.workspace.resource_type} \n`
+      `${task.workspace.gid.trim()};${task.workspace.name.trim()};${task.workspace.resource_type.trim()} \n`
     );
   }
 
@@ -145,7 +145,7 @@ export default class WriteCsvService {
 
     task.memberships.forEach((memberships) => {
       membershipsCsv.write(
-        `${task.gid};${memberships.project.gid};${memberships.project.name};${memberships.project.resource_type};${memberships.section.gid};${memberships.section.name};${memberships.section.resource_type} \n`
+        `${task.gid.trim()};${memberships.project.gid.trim()};${memberships.project.name.trim()};${memberships.project.resource_type.trim()};${memberships.section.gid.trim()};${memberships.section.name.trim()};${memberships.section.resource_type.trim()} \n`
       );
     });
   }
@@ -156,7 +156,7 @@ export default class WriteCsvService {
     }
 
     task.tags.forEach((tags) => {
-      tagsCsv.write(`${task.gid};${tags.gid};${tags.name};${tags.resource_type} \n`);
+      tagsCsv.write(`${task.gid.trim()};${tags.gid.trim()};${tags.name.trim()};${tags.resource_type.trim()} \n`);
     });
   }
 
