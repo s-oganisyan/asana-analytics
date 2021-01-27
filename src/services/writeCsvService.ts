@@ -1,12 +1,11 @@
-import fs from 'fs';
-import path from 'path';
 import DateService from './dateService';
+import CreateCsvService from './createCsvService';
 import ParseStringService from './parseStringService';
 import { Writable } from 'stream';
 import { IProject, IResponseFullTask } from '../interfaces/asanaApi';
 
 export default class WriteCsvService {
-  private readonly dirName: string;
+  private createCsvService: CreateCsvService;
 
   private users: string[] = [];
 
@@ -23,21 +22,19 @@ export default class WriteCsvService {
   private readonly membershipFields: string =
     'task_gid;project_gid;project_name;project_resource_type;section_gid;section_name;section_resource_type \n';
 
-  constructor(dirName = 'csv') {
-    this.dirName = dirName;
+  constructor() {
+    this.createCsvService = new CreateCsvService();
   }
 
-  public createCsv(projectTasks: IProject[]): void {
-    this.createCsvDirectory(path.resolve(__dirname, `../../${this.dirName}`));
-
+  public writeCsv(projectTasks: IProject[]): void {
     this.writeCsvData(
       projectTasks,
-      this.createStreamForWriteCsv('project'),
-      this.createStreamForWriteCsv('tasks'),
-      this.createStreamForWriteCsv('users'),
-      this.createStreamForWriteCsv('workspaces'),
-      this.createStreamForWriteCsv('tags'),
-      this.createStreamForWriteCsv('memberships')
+      this.createCsvService.createCsv('project'),
+      this.createCsvService.createCsv('tasks'),
+      this.createCsvService.createCsv('users'),
+      this.createCsvService.createCsv('workspaces'),
+      this.createCsvService.createCsv('tags'),
+      this.createCsvService.createCsv('memberships')
     );
   }
 
@@ -96,20 +93,6 @@ export default class WriteCsvService {
 
   private getTaskPropertyNames(task: IResponseFullTask): string {
     return Object.keys(task).join(';');
-  }
-
-  private createCsvDirectory(path: string) {
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
-    }
-  }
-
-  private createStreamForWriteCsv(fileName: string): Writable {
-    return fs.createWriteStream(this.getPath(fileName));
-  }
-
-  private getPath(fileName: string): string {
-    return path.resolve(__dirname, `../../${this.dirName}/${fileName}.csv`);
   }
 
   private writeCsvUsers(task: IResponseFullTask, usersCsv: Writable): void {

@@ -9,12 +9,12 @@ const asanaRequestService = new AsanaMakeDataProjectsService(asanaClient);
 const dirName = 'csvTest';
 
 beforeEach(async () => {
-  const writeCsvService = new WriteCsvService(dirName);
+  const writeCsvService = new WriteCsvService();
   const projectsTasks = await asanaRequestService.getProjectsTasks();
-  writeCsvService.createCsv(projectsTasks);
+  writeCsvService.writeCsv(projectsTasks);
 });
 
-test('createCsv', async () => {
+test('writeCsv', async () => {
   const pathTest = `../../${dirName}`;
   const testFileNames = ['memberships.csv', 'project.csv', 'tags.csv', 'tasks.csv', 'users.csv', 'workspaces.csv'];
   const existDir = fs.existsSync(path.resolve(__dirname, pathTest));
