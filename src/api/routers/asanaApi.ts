@@ -1,6 +1,7 @@
 import asana from 'asana';
 import config from '../../config';
-import AsanaMakeDataProjects from '../../services/asanaMakeDataProjects';
+import WriteCsvService from '../../services/writeCsvServices/writeCsvService';
+import AsanaMakeDataProjectsService from '../../services/asanaServices/asanaMakeDataProjectsService';
 import { Router, Request, Response } from 'express';
 
 const route = Router();
@@ -11,8 +12,11 @@ export default (app: Router): void => {
   route.get('/tasks', async (req: Request, res: Response) => {
     try {
       const client = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
-      const asanaMakeDataProjects = new AsanaMakeDataProjects(client);
+      const asanaMakeDataProjects = new AsanaMakeDataProjectsService(client);
       const tasksOfProjects = await asanaMakeDataProjects.getProjectsTasks();
+
+      const writeCsvService = new WriteCsvService();
+      writeCsvService.writeCsv(tasksOfProjects);
 
       return res.status(201).json(tasksOfProjects);
     } catch (e) {

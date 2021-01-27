@@ -58,5 +58,5 @@ export interface IProject {
   tasks: ITasks;
 }
 export interface ITasks {
-  data: IApiEntity[];
+  data: IResponseFullTask[];
 }

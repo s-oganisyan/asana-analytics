@@ -1,9 +1,9 @@
 import asana from 'asana';
-import config from '../config';
-import Logger from '../logger';
-import DateService from './dateService';
+import config from '../../config';
+import Logger from '../../logger';
+import DateService from '../helperServices/dateService';
 import { Container, Service } from 'typedi';
-import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../interfaces/asanaApi';
+import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../../interfaces/asanaApi';
 
 @Service()
 export default class AsanaRequestService {

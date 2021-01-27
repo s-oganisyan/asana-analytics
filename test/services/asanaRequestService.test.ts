@@ -1,5 +1,5 @@
 import asanaMock from '../mock/asanaMock';
-import AsanaRequestService from '../../src/services/asanaRequestService';
+import AsanaRequestService from '../../src/services/asanaServices/asanaRequestService';
 import { IGetTaskListParams } from '../../src/interfaces/asanaApi';
 
 const asanaClient = asanaMock();

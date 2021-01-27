@@ -34,7 +34,7 @@ export default class Logger {
       const path = e.stack
         .split('at')[4]
         .match(/\((.*)\)/)[1]
-        .split('/');
+        .split(/\\|\//);
       return `${path[path.length - 2]}/${path[path.length - 1]}`;
     }
   }
