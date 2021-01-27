@@ -56,7 +56,7 @@ export default class WriteCsvService {
       project.tasks.data.forEach((task) => {
         projectsCsv.write(`${project.projectName};${task.gid} \n`);
         this.fixPropertyDateTask(task);
-        tasksCsv.write(`${this.getTaskProperty(task)} \n`);
+        tasksCsv.write(`${this.getTaskProperty(task)};${this.doneRequestTime(task)} \n`);
 
         this.writeCsvUsers(task, usersCsv);
         this.writeCsvWorkspaces(task, workspacesCsv);
@@ -87,7 +87,7 @@ export default class WriteCsvService {
     membershipsCsv: Writable
   ) {
     projectsCsv.write(this.projectFields);
-    tasksCsv.write(`${this.getTaskPropertyNames(projectTasks[0].tasks.data[0])} \n`);
+    tasksCsv.write(`${this.getTaskPropertyNames(projectTasks[0].tasks.data[0])};done_request_time \n`);
     usersCsv.write(this.userFields);
     workspacesCsv.write(this.workspaceFields);
     tagsCsv.write(this.tagFields);
@@ -179,12 +179,20 @@ export default class WriteCsvService {
     }
   }
 
-  fixPropertyDateTask(task: IResponseFullTask): void {
+  private fixPropertyDateTask(task: IResponseFullTask): void {
     const properties = Object.keys(task);
     properties.forEach((property) => {
       if (task[property] != null && (property.endsWith('_at') || property.endsWith('_on'))) {
         task[property] = DateService.changeTimezone(task[property]);
       }
     });
+  }
+
+  private doneRequestTime(task: IResponseFullTask): number {
+    const createAt = new Date(task.created_at);
+    const modifiedAt = new Date(task.modified_at);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return modifiedAt - createAt;
   }
 }

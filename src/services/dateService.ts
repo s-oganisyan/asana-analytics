@@ -1,4 +1,5 @@
 import config from '../config';
+import moment from 'moment-timezone';
 
 export default class DateService {
   public getDateOfLastRequest(): Date {
@@ -8,8 +9,7 @@ export default class DateService {
   }
 
   public static changeTimezone(date: string): Date {
-    const currentDate = new Date(date);
-    currentDate.setHours(currentDate.getHours() + 3);
-    return currentDate;
+    const newDate = moment(date);
+    return new Date(newDate.format());
   }
 }
