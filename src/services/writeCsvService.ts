@@ -30,7 +30,7 @@ export default class WriteCsvService {
   public createCsv(projectTasks: IProject[]): void {
     this.createCsvDirectory(path.resolve(__dirname, `../../${this.dirName}`));
 
-    this.createCsvData(
+    this.writeCsvData(
       projectTasks,
       this.createStreamForWriteCsv('project'),
       this.createStreamForWriteCsv('tasks'),
@@ -41,7 +41,7 @@ export default class WriteCsvService {
     );
   }
 
-  private createCsvData(
+  private writeCsvData(
     projectTasks: IProject[],
     projectsCsv: Writable,
     tasksCsv: Writable,
