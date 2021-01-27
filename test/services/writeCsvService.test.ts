@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import asanaMock from '../mock/asanaMock';
-import WriteCsvService from '../../src/services/writeCsvService';
-import AsanaMakeDataProjectsService from '../../src/services/asanaMakeDataProjectsService';
+import WriteCsvService from '../../src/services/writeCsvServices/writeCsvService';
+import AsanaMakeDataProjectsService from '../../src/services/asanaServices/asanaMakeDataProjectsService';
 
 const asanaClient = asanaMock();
 const asanaRequestService = new AsanaMakeDataProjectsService(asanaClient);

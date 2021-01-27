@@ -1,8 +1,8 @@
 import asana from 'asana';
-import DateService from './dateService';
+import DateService from '../helperServices/dateService';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
-import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask } from '../interfaces/asanaApi';
+import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask } from '../../interfaces/asanaApi';
 
 @Service()
 export default class AsanaMakeDataProjectsService {

@@ -1,3 +1,5 @@
+import { IResponseFullTask } from './asanaApi';
+
 export default interface WriteCsv {
-  write(): void;
+  write(task: IResponseFullTask): void;
 }

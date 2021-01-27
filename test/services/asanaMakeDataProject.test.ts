@@ -1,5 +1,5 @@
 import asanaMock from '../mock/asanaMock';
-import AsanaMakeDataProjectsService from '../../src/services/asanaMakeDataProjectsService';
+import AsanaMakeDataProjectsService from '../../src/services/asanaServices/asanaMakeDataProjectsService';
 
 const asanaClient = asanaMock();
 const asanaRequestService = new AsanaMakeDataProjectsService(asanaClient);

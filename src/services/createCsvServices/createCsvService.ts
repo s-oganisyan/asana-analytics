@@ -10,7 +10,7 @@ export default class CreateCsvService {
   }
 
   public createCsv(fileName: string): Writable {
-    this.createCsvDirectory(path.resolve(__dirname, `../../${this.dirName}`));
+    this.createCsvDirectory(path.resolve(__dirname, `../../../${this.dirName}`));
     return this.createStreamForWriteCsv(fileName);
   }
 
@@ -25,6 +25,6 @@ export default class CreateCsvService {
   }
 
   private getPath(fileName: string): string {
-    return path.resolve(__dirname, `../../${this.dirName}/${fileName}.csv`);
+    return path.resolve(__dirname, `../../../${this.dirName}/${fileName}.csv`);
   }
 }

@@ -1,5 +1,5 @@
-import config from '../config';
-import moment, { Moment } from 'moment-timezone';
+import config from '../../config';
+import moment from 'moment-timezone';
 
 export default class DateService {
   public getDateOfLastRequest(): Date {

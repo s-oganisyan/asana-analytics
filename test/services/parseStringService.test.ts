@@ -1,4 +1,4 @@
-import parseStringService from '../../src/services/parseStringService';
+import parseStringService from '../../src/services/helperServices/parseStringService';
 
 test('removeSymbolsInString string', () => {
   const string = 'test,\nstring;';

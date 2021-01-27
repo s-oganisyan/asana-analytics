@@ -1,7 +1,7 @@
 import asana from 'asana';
 import config from '../../config';
-import WriteCsvService from '../../services/writeCsvService';
-import AsanaMakeDataProjectsService from '../../services/asanaMakeDataProjectsService';
+import WriteCsvService from '../../services/writeCsvServices/writeCsvService';
+import AsanaMakeDataProjectsService from '../../services/asanaServices/asanaMakeDataProjectsService';
 import { Router, Request, Response } from 'express';
 
 const route = Router();
