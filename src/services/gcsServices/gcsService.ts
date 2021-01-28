@@ -27,7 +27,6 @@ export default class GcsService {
       bucket
         .file(writeFile)
         .createWriteStream({
-          resumable: false,
           gzip: true,
         })
         .on('error', (err) => {
