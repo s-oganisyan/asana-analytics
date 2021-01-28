@@ -11,8 +11,8 @@ export default class WriteCsvWorkspacesService implements WriteCsv {
   private readonly fields: string =
     'task_gid;project_gid;project_name;project_resource_type;section_gid;section_name;section_resource_type \n';
 
-  constructor() {
-    this.file = new CreateCsvService().createCsv(this.nameCsv);
+  constructor(dirName: string) {
+    this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);
     this.file.write(this.fields);
   }
 
