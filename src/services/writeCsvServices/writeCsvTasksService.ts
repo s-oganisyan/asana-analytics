@@ -9,8 +9,8 @@ export default class WriteCsvTasksService implements WriteCsv {
 
   private readonly nameCsv: string = 'tasks';
 
-  constructor() {
-    this.file = new CreateCsvService().createCsv(this.nameCsv);
+  constructor(dirName: string) {
+    this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);
   }
 
   write(task: IResponseFullTask): void {
