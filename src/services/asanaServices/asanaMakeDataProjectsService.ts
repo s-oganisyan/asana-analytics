@@ -1,4 +1,5 @@
 import asana from 'asana';
+import Logger from '../../logger';
 import DateService from '../helperServices/dateService';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
@@ -31,8 +32,7 @@ export default class AsanaMakeDataProjectsService {
       const tasks = await this.asanaRequestService.getTasks(params);
       projectData.push({ projectName: project.name, tasks } as IProject);
     }
-    const b = await this.replacementTasksInProjects(projectData, true);
-    return b;
+    return await this.replacementTasksInProjects(projectData, true);
   }
 
   private async dataProjects(projects: IApiEntity[], isAllTasks: boolean): Promise<IProject[]> {
@@ -66,15 +66,18 @@ export default class AsanaMakeDataProjectsService {
   }
 
   private async getFullTasksForProject(dataProject: IProject): Promise<IResponseFullTask[]> {
-    const fullTasks: IResponseFullTask[] = [];
+    try {
+      const fullTasks: IResponseFullTask[] = [];
+      for (const task of dataProject.tasks.data) {
+        let fullTask = await this.asanaRequestService.getTaskById(task.gid);
+        fullTask = { ...fullTask, ...this.parseTicketsName(fullTask.name) };
+        fullTasks.push(fullTask as IResponseFullTask);
+      }
 
-    for (const task of dataProject.tasks.data) {
-      let fullTask = await this.asanaRequestService.getTaskById(task.gid);
-      fullTask = { ...fullTask, ...this.parseTicketsName(fullTask.name) };
-      fullTasks.push(fullTask as IResponseFullTask);
+      return fullTasks;
+    } catch (error) {
+      Logger.error(error);
     }
-
-    return fullTasks;
   }
 
   private createTaskListParams(isAllTasks: boolean): IGetTaskListParams {
@@ -97,13 +100,14 @@ export default class AsanaMakeDataProjectsService {
     const devInfo = name.slice(name.indexOf('(') + 1, name.lastIndexOf(')'));
     const [developer, platform] = devInfo.split(' ', 2);
     const agency: boolean = devInfo.toLowerCase().indexOf('agency') !== -1;
-    return {
-      client: client.trim(),
-      company: company.trim(),
+    const res = {
+      client: client ? client.trim() : client,
+      company: company ? company.trim() : company,
       job_title,
-      developer: developer.trim(),
-      platform: platform && platform.toLowerCase() === 'agency' ? undefined : platform.trim(),
+      developer: developer ? developer.trim() : developer,
+      platform: platform && platform.toLowerCase() !== 'agency' ? platform.trim() : undefined,
       agency,
     };
+    return res;
   }
 }
