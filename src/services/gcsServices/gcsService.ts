@@ -7,7 +7,11 @@ import { Bucket, Storage } from '@google-cloud/storage';
 export default class GcsService {
   storage: Storage;
 
+  pathDir: string;
+
   constructor() {
+    this.pathDir = path.resolve(__dirname, '../../../csv/');
+
     const asanaFilePath = path.resolve(__dirname, `../../../${config.ASANA_FILE_NAME}`);
     this.storage = new Storage({
       projectId: config.PROJECT_ID,
@@ -16,8 +20,8 @@ export default class GcsService {
   }
 
   async loadCsvInGcs(readFile: string, writeFile: string): Promise<void> {
-    const bucket = await this.storage.bucket('gbq-asana-crawler');
-    const pathFile = path.resolve(__dirname, `../../../csv/${readFile}`);
+    const bucket = await this.storage.bucket(config.PROJECT_NAME);
+    const pathFile = path.resolve(this.pathDir, readFile);
 
     this.uploadFile(bucket, pathFile, writeFile);
   }
