@@ -2,18 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import Logger from '../../logger';
 import config from '../../config/index';
-import {Bucket, Storage} from '@google-cloud/storage';
+import { Bucket, Storage } from '@google-cloud/storage';
 
 export default class GcsService {
-
   storage: Storage;
 
   constructor() {
-      const asanaFilePath = path.resolve(__dirname, `../../../${config.ASANA_FILE_NAME}`);
-      this.storage =  new Storage({
-          projectId: config.PROJECT_ID,
-          keyFilename: asanaFilePath,
-      });
+    const asanaFilePath = path.resolve(__dirname, `../../../${config.ASANA_FILE_NAME}`);
+    this.storage = new Storage({
+      projectId: config.PROJECT_ID,
+      keyFilename: asanaFilePath,
+    });
   }
 
   async loadCsvInGcs(readFile: string, writeFile: string): Promise<void> {
@@ -24,19 +23,19 @@ export default class GcsService {
   }
 
   private uploadFile(bucket: Bucket, pathFile: string, writeFile: string) {
-      fs.createReadStream(pathFile).pipe(
-          bucket
-              .file(writeFile)
-              .createWriteStream({
-                  resumable: false,
-                  gzip: true,
-              })
-              .on('error', (err) => {
-                  Logger.error(err.message);
-              })
-              .on('finish', () => {
-                  Logger.info('Done');
-              })
-      );
+    fs.createReadStream(pathFile).pipe(
+      bucket
+        .file(writeFile)
+        .createWriteStream({
+          resumable: false,
+          gzip: true,
+        })
+        .on('error', (err) => {
+          Logger.error(err.message);
+        })
+        .on('finish', () => {
+          Logger.info('Done');
+        })
+    );
   }
 }
