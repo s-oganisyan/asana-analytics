@@ -23,14 +23,14 @@ export default class WriteCsvService {
 
   private writeCsvMembershipsService: WriteCsvMembershipsService;
 
-  constructor() {
-    this.createCsvService = new CreateCsvService();
-    this.writeCsvUsersService = new WriteCsvUsersService();
-    this.writeCsvTasksService = new WriteCsvTasksService();
-    this.writeCsvWorkspacesService = new WriteCsvWorkspacesService();
-    this.writeCsvProjectsService = new WriteCsvProjectsService();
-    this.writeCsvTagsService = new WriteCsvTagsService();
-    this.writeCsvMembershipsService = new WriteCsvMembershipsService();
+  constructor(dirName = 'csv') {
+    this.createCsvService = new CreateCsvService(dirName);
+    this.writeCsvUsersService = new WriteCsvUsersService(dirName);
+    this.writeCsvTasksService = new WriteCsvTasksService(dirName);
+    this.writeCsvWorkspacesService = new WriteCsvWorkspacesService(dirName);
+    this.writeCsvProjectsService = new WriteCsvProjectsService(dirName);
+    this.writeCsvTagsService = new WriteCsvTagsService(dirName);
+    this.writeCsvMembershipsService = new WriteCsvMembershipsService(dirName);
   }
 
   public writeCsv(projectTasks: IProject[]): void {
