@@ -4,8 +4,9 @@
     "description": "",
     "main": "src/app.ts",
     "scripts": {
-        "start": "tsc && node dist/src/app.js",
+        "start": "tsc && node dist/app.js",
         "dev": "nodemon",
+        "test-parser": "tsc && node dist/scripts/testParser.js",
         "test": "jest --passWithNoTests && npm run lint",
         "lint": "eslint . --ext .js,.ts,",
         "lint:fix": "npm run lint -- --fix"

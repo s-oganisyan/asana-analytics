@@ -16,7 +16,7 @@ beforeEach(async () => {
 
 test('writeCsv', async () => {
   const pathTest = `../../${dirName}`;
-  const testFileNames = ['memberships.csv', 'project.csv', 'tags.csv', 'tasks.csv', 'users.csv', 'workspaces.csv'];
+  const testFileNames = ['memberships.csv', 'projects.csv', 'tags.csv', 'tasks.csv', 'users.csv', 'workspaces.csv'];
   const existDir = fs.existsSync(path.resolve(__dirname, pathTest));
   expect(existDir).toBeTruthy();
 
