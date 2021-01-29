@@ -7,7 +7,7 @@ import { IResponseFullTask } from '../../interfaces/asanaApi';
 export default class WriteCsvTasksService implements WriteCsv {
   private readonly file: Writable;
 
-  private readonly nameCsv: string = 'tasks';
+  readonly nameCsv: string = 'tasks';
 
   constructor(dirName: string) {
     this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);

@@ -6,7 +6,7 @@ import { IResponseFullTask } from '../../interfaces/asanaApi';
 export default class WriteCsvWorkspacesService implements WriteCsv {
   private readonly file: Writable;
 
-  private readonly nameCsv: string = 'memberships';
+  readonly nameCsv: string = 'memberships';
 
   private readonly fields: string =
     'task_gid;project_gid;project_name;project_resource_type;section_gid;section_name;section_resource_type \n';

@@ -8,7 +8,7 @@ export default class WriteCsvWorkspacesService implements WriteCsv {
 
   private workspaces: string[] = [];
 
-  private readonly nameCsv: string = 'workspaces';
+  readonly nameCsv: string = 'workspaces';
 
   private readonly fields: string = 'gid;name;resource_type \n';
 

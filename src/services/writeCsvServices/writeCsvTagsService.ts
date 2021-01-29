@@ -6,7 +6,7 @@ import { IResponseFullTask } from '../../interfaces/asanaApi';
 export default class WriteCsvTagsService implements WriteCsv {
   private readonly file: Writable;
 
-  private readonly nameCsv: string = 'tags';
+  readonly nameCsv: string = 'tags';
 
   private readonly fields: string = 'task_gid;gid;name;resource_type \n';
 

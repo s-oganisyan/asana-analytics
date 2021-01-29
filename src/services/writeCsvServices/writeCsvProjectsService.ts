@@ -8,7 +8,7 @@ export default class WriteCsvProjectsService implements WriteCsv {
 
   private projectName: string;
 
-  private readonly nameCsv: string = 'projects';
+  readonly nameCsv: string = 'projects';
 
   private readonly fields: string = 'project_name;task_gid \n';
 

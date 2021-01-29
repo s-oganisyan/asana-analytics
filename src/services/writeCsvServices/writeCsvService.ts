@@ -26,11 +26,14 @@ export default class WriteCsvService {
     this.writeCsvTasksService.writeTaskFields(projectTasks[0].tasks.data[0]);
 
     projectTasks.forEach((project) => {
-      this.writeCsvProjectsService.setProjectName(project.projectName);
-
       project.tasks.data.forEach((task: IResponseFullTask) => {
         this.fixPropertyDateTask(task);
         this.csvServices.forEach((service: writeCsv) => {
+          if (service.nameCsv === 'projects') {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            service.setProjectName(project.projectName);
+          }
           service.write(task);
         });
       });

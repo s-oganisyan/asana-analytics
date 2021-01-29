@@ -8,7 +8,7 @@ export default class WriteCsvUsersService implements WriteCsv {
 
   private users: string[] = [];
 
-  private readonly nameCsv: string = 'users';
+  readonly nameCsv: string = 'users';
 
   private readonly fields: string = 'gid;name;resource_type \n';
 
