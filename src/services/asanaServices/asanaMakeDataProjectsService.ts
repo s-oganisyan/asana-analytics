@@ -1,18 +1,18 @@
 import asana from 'asana';
-import DateService from '../helperServices/dateService';
+import DateHelper from '../helperServices/dateHelper';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
 import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask } from '../../interfaces/asanaApi';
 
 @Service()
 export default class AsanaMakeDataProjectsService {
-  private dateService: DateService;
+  private dateService: DateHelper;
 
   private asanaRequestService: AsanaRequestService;
 
   constructor(client: asana.Client) {
     this.asanaRequestService = new AsanaRequestService(client);
-    this.dateService = Container.get(DateService);
+    this.dateService = Container.get(DateHelper);
   }
 
   public async getProjectsTasks(isAllTasks = true): Promise<IProject[]> {

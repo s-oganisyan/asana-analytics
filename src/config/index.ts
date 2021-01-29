@@ -18,7 +18,7 @@ export default {
   GCS: {
     FILE_NAME: process.env.GCS_FILE_NAME,
     PROJECT_ID: process.env.GCS_PROJECT_ID,
-    PROJECT_NAME: process.env.PROJECT_NAME,
+    PROJECT_NAME: process.env.GCS_PROJECT_NAME,
   },
   ASANA: {
     PERSONAL_ACCESS_TOKEN: process.env.ASANA_PERSONAL_ACCESS_TOKEN,

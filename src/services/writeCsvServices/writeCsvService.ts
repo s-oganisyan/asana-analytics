@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 import writeCsv from '../../interfaces/writeCsv';
-import DateService from '../helperServices/dateService';
+import DateHelper from '../helperServices/dateHelper';
 import WriteCsvTasksService from './writeCsvTasksService';
 import WriteCsvProjectsService from './writeCsvProjectsService';
 import { IProject, IResponseFullTask } from '../../interfaces/asanaApi';
@@ -41,7 +41,7 @@ export default class WriteCsvService {
     const properties = Object.keys(task);
     properties.forEach((property) => {
       if (task[property] != null && (property.endsWith('_at') || property.endsWith('_on'))) {
-        task[property] = DateService.changeTimezone(task[property]);
+        task[property] = DateHelper.changeTimezone(task[property]);
       }
     });
   }

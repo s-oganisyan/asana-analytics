@@ -1,6 +1,6 @@
 import WriteCsv from '../../interfaces/writeCsv';
+import ParseStringHelper from '../helperServices/parseStringHelper';
 import CreateCsvService from '../createCsvServices/createCsvService';
-import ParseStringService from '../helperServices/parseStringService';
 import { Writable } from 'stream';
 import { IResponseFullTask } from '../../interfaces/asanaApi';
 
@@ -29,7 +29,7 @@ export default class WriteCsvTasksService implements WriteCsv {
     let properties = '';
 
     for (const key in task) {
-      const value = ParseStringService.removeSymbolsInString(task[key]);
+      const value = ParseStringHelper.removeSymbolsInString(task[key]);
       properties = properties === '' ? `${value}` : `${properties}; ${value}`;
     }
 

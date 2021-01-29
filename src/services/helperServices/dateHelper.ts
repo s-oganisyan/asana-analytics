@@ -1,7 +1,7 @@
 import config from '../../config';
 import moment from 'moment-timezone';
 
-export default class DateService {
+export default class DateHelper {
   public getDateOfLastRequest(): Date {
     const date = new Date();
     const milliseconds = date.setHours(date.getHours() - config.TIME_RESPONSE_DATA);
