@@ -12,15 +12,15 @@ export default class GcsService {
   constructor() {
     this.pathDir = path.resolve(__dirname, '../../../csv/');
 
-    const asanaFilePath = path.resolve(__dirname, `../../../${config.ASANA_FILE_NAME}`);
+    const asanaFilePath = path.resolve(__dirname, `../../../${config.GCS.FILE_NAME}`);
     this.storage = new Storage({
-      projectId: config.PROJECT_ID,
+      projectId: config.GCS.PROJECT_ID,
       keyFilename: asanaFilePath,
     });
   }
 
   async loadCsvInGcs(readFile: string, writeFile: string): Promise<void> {
-    const bucket = await this.storage.bucket(config.PROJECT_NAME);
+    const bucket = await this.storage.bucket(config.GCS.PROJECT_NAME);
     const pathFile = path.resolve(this.pathDir, readFile);
 
     this.uploadFile(bucket, pathFile, writeFile);

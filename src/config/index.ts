@@ -15,9 +15,11 @@ export default {
   TIME_RESPONSE_DATA: 12,
   LOG_LEVEL_FILE: process.env.LOG_LEVEL_FILE,
   LOG_LEVEL_CONSOLE: process.env.LOG_LEVEL_CONSOLE,
-  ASANA_FILE_NAME: process.env.ASANA_FILE_NAME,
-  PROJECT_ID: process.env.PROJECT_ID,
-  PROJECT_NAME: process.env.PROJECT_NAME,
+  GCS: {
+    FILE_NAME: process.env.GCS_FILE_NAME,
+    PROJECT_ID: process.env.GCS_PROJECT_ID,
+    PROJECT_NAME: process.env.PROJECT_NAME,
+  },
   ASANA: {
     PERSONAL_ACCESS_TOKEN: process.env.ASANA_PERSONAL_ACCESS_TOKEN,
     WORKSPACE: process.env.WORKSPACE,
