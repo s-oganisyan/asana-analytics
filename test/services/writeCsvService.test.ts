@@ -11,7 +11,7 @@ const dirName = 'csvTest';
 beforeEach(async () => {
   const writeCsvService = new WriteCsvService(dirName);
   const projectsTasks = await asanaRequestService.getProjectsTasks();
-  writeCsvService.writeCsv(projectsTasks);
+  await writeCsvService.writeCsv(projectsTasks);
 });
 
 test('writeCsv', async () => {

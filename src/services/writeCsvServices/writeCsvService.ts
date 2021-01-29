@@ -1,53 +1,38 @@
+import path from 'path';
+import fs from 'fs/promises';
+import writeCsv from '../../interfaces/writeCsv';
 import DateService from '../helperServices/dateService';
-import WriteCsvTagsService from './writeCsvTagsService';
-import WriteCsvUsersService from './writeCsvUsersService';
 import WriteCsvTasksService from './writeCsvTasksService';
 import WriteCsvProjectsService from './writeCsvProjectsService';
-import WriteCsvWorkspacesService from './writeCsvWorkspacesService';
-import CreateCsvService from '../createCsvServices/createCsvService';
-import WriteCsvMembershipsService from './writeCsvMembershipsService';
 import { IProject, IResponseFullTask } from '../../interfaces/asanaApi';
 
 export default class WriteCsvService {
-  private createCsvService: CreateCsvService;
-
-  private writeCsvUsersService: WriteCsvUsersService;
+  private readonly dirName: string;
 
   private writeCsvTasksService: WriteCsvTasksService;
 
-  private writeCsvWorkspacesService: WriteCsvWorkspacesService;
-
   private writeCsvProjectsService: WriteCsvProjectsService;
 
-  private writeCsvTagsService: WriteCsvTagsService;
-
-  private writeCsvMembershipsService: WriteCsvMembershipsService;
+  private csvServices: writeCsv[];
 
   constructor(dirName = 'csv') {
-    this.createCsvService = new CreateCsvService(dirName);
-    this.writeCsvUsersService = new WriteCsvUsersService(dirName);
+    this.dirName = dirName;
     this.writeCsvTasksService = new WriteCsvTasksService(dirName);
-    this.writeCsvWorkspacesService = new WriteCsvWorkspacesService(dirName);
     this.writeCsvProjectsService = new WriteCsvProjectsService(dirName);
-    this.writeCsvTagsService = new WriteCsvTagsService(dirName);
-    this.writeCsvMembershipsService = new WriteCsvMembershipsService(dirName);
   }
 
-  public writeCsv(projectTasks: IProject[]): void {
+  public async writeCsv(projectTasks: IProject[]): Promise<void> {
+    this.csvServices = await this.getCsvServices();
     this.writeCsvTasksService.writeTaskFields(projectTasks[0].tasks.data[0]);
 
     projectTasks.forEach((project) => {
       this.writeCsvProjectsService.setProjectName(project.projectName);
 
-      project.tasks.data.forEach((task) => {
+      project.tasks.data.forEach((task: IResponseFullTask) => {
         this.fixPropertyDateTask(task);
-
-        this.writeCsvTasksService.write(task);
-        this.writeCsvUsersService.write(task);
-        this.writeCsvWorkspacesService.write(task);
-        this.writeCsvProjectsService.write(task);
-        this.writeCsvTagsService.write(task);
-        this.writeCsvMembershipsService.write(task);
+        this.csvServices.forEach((service: writeCsv) => {
+          service.write(task);
+        });
       });
     });
   }
@@ -59,5 +44,24 @@ export default class WriteCsvService {
         task[property] = DateService.changeTimezone(task[property]);
       }
     });
+  }
+
+  private async getCsvServices(): Promise<writeCsv[]> {
+    const fileNames = await fs.readdir(__dirname);
+    const currentPathFile = __filename.split('/');
+    const csvServices: writeCsv[] = [];
+
+    fileNames
+      .filter(
+        (fileName) =>
+          fileName !== currentPathFile[currentPathFile.length - 1] &&
+          (fileName.endsWith('ts') || fileName.endsWith('js'))
+      )
+      .forEach((filename) => {
+        const csvServiceClass = require(path.resolve(__dirname, filename)).default;
+        csvServices.push(new csvServiceClass(this.dirName));
+      });
+
+    return csvServices;
   }
 }
