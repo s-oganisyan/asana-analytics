@@ -30,8 +30,6 @@ export default class WriteCsvService {
         this.fixPropertyDateTask(task);
         this.csvServices.forEach((service: writeCsv) => {
           if (service.nameCsv === 'projects') {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             service.setProjectName(project.projectName);
           }
           service.write(task);
