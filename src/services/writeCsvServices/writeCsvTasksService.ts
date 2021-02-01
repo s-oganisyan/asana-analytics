@@ -1,11 +1,12 @@
 import WriteCsv from '../../interfaces/writeCsv';
+import writeCsv from '../../interfaces/writeCsv';
 import ParseStringHelper from '../helperServices/parseStringHelper';
 import CreateCsvService from '../createCsvServices/createCsvService';
 import { Writable } from 'stream';
 import { IResponseFullTask } from '../../interfaces/asanaApi';
 
 export default class WriteCsvTasksService implements WriteCsv {
-  private readonly file: Writable;
+  public readonly file: Writable;
 
   readonly nameCsv: string = 'tasks';
 
@@ -14,11 +15,19 @@ export default class WriteCsvTasksService implements WriteCsv {
   }
 
   write(task: IResponseFullTask): void {
-    this.file.write(`${this.getTaskProperty(task)};${this.doneRequestTime(task)} \n`);
+    this.file.write(`${this.getTaskProperty(task)};${this.doneRequestTime(task)}\n`);
   }
 
-  public writeTaskFields(task: IResponseFullTask): void {
-    this.file.write(`${this.getTaskPropertyNames(task)};done_request_time \n`);
+  public writeTaskFields(services: writeCsv[], task: IResponseFullTask): void {
+    services.forEach((service) => {
+      if (service.nameCsv === this.nameCsv) {
+        this.writeFields(service, task);
+      }
+    });
+  }
+
+  public writeFields(service: writeCsv, task: IResponseFullTask): void {
+    service.file.write(`${this.getTaskPropertyNames(task)};done_request_time\n`);
   }
 
   private getTaskPropertyNames(task: IResponseFullTask): string {

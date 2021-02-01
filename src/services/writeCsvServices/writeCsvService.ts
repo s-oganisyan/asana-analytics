@@ -23,7 +23,7 @@ export default class WriteCsvService {
 
   public async writeCsv(projectTasks: IProject[]): Promise<void> {
     this.csvServices = await this.getCsvServices();
-    this.writeCsvTasksService.writeTaskFields(projectTasks[0].tasks.data[0]);
+    this.writeCsvTasksService.writeTaskFields(this.csvServices, projectTasks[0].tasks.data[0]);
 
     projectTasks.forEach((project) => {
       project.tasks.data.forEach((task: IResponseFullTask) => {

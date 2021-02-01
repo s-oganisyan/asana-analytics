@@ -4,13 +4,13 @@ import { Writable } from 'stream';
 import { IResponseFullTask } from '../../interfaces/asanaApi';
 
 export default class WriteCsvWorkspacesService implements WriteCsv {
-  private readonly file: Writable;
+  public readonly file: Writable;
 
   private workspaces: string[] = [];
 
   readonly nameCsv: string = 'workspaces';
 
-  private readonly fields: string = 'gid;name;resource_type \n';
+  private readonly fields: string = 'gid;name;resource_type\n';
 
   constructor(dirName: string) {
     this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);
@@ -24,7 +24,7 @@ export default class WriteCsvWorkspacesService implements WriteCsv {
 
     this.checkExistRecordAndWrite(
       task.workspace.gid,
-      `${task.workspace.gid.trim()};${task.workspace.name.trim()};${task.workspace.resource_type.trim()} \n`
+      `${task.workspace.gid.trim()};${task.workspace.name.trim()};${task.workspace.resource_type.trim()}\n`
     );
   }
 
