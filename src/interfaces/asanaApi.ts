@@ -60,3 +60,12 @@ export interface IProject {
 export interface ITasks {
   data: IResponseFullTask[];
 }
+
+export interface ITaskNameObj {
+  client: string;
+  company: string;
+  job_title: string;
+  developer: string;
+  platform: string;
+  agency: boolean;
+}

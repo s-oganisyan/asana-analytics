@@ -1,4 +1,5 @@
 import asana from 'asana';
+import Logger from '../../logger';
 import DateHelper from '../helperServices/dateHelper';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
@@ -29,7 +30,6 @@ export default class AsanaMakeDataProjectsService {
 
   private async fillTheDataProject(projects: IApiEntity[], params: IGetTaskListParams): Promise<IProject[]> {
     const projectData: IProject[] = [];
-
     for (const project of projects) {
       params.project = project.gid;
       const tasks = await this.asanaRequestService.getTasks(params);
@@ -40,22 +40,26 @@ export default class AsanaMakeDataProjectsService {
   }
 
   private async replacementTasksInProjects(dataProjects: IProject[]): Promise<IProject[]> {
-    for (const dataProject of dataProjects) {
+    const dataProjectsTemp: IProject[] = [...dataProjects];
+    for (const dataProject of dataProjectsTemp) {
       dataProject.tasks.data = await this.getFullTasksForProject(dataProject);
     }
 
-    return dataProjects;
+    return dataProjectsTemp;
   }
 
   private async getFullTasksForProject(dataProject: IProject): Promise<IResponseFullTask[]> {
-    const fullTasks: IResponseFullTask[] = [];
+    try {
+      const fullTasks: IResponseFullTask[] = [];
+      for (const task of dataProject.tasks.data) {
+        const fullTask = await this.asanaRequestService.getTaskById(task.gid);
+        fullTasks.push(fullTask as IResponseFullTask);
+      }
 
-    for (let task of dataProject.tasks.data) {
-      task = await this.asanaRequestService.getTaskById(task.gid);
-      fullTasks.push(task as IResponseFullTask);
+      return fullTasks;
+    } catch (error) {
+      Logger.error(error);
     }
-
-    return fullTasks;
   }
 
   private createTaskListParams(isAllTasks: boolean): IGetTaskListParams {

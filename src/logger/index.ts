@@ -31,11 +31,9 @@ export default class Logger {
     try {
       throw new Error();
     } catch (e) {
-      const path = e.stack
-        .split('at')[2]
-        .match(/\((.*)\)/)[1]
-        .split(/\\|\//);
-      return `${path[path.length - 2]}/${path[path.length - 1]}`;
+      let path = e.stack.split('at');
+      path = e.stack.split('at').length > 6 ? path[4].match(/\((.*)\)/)[1].split(/\\|\//) : path[4].split('/');
+      return `${path[path.length - 2]}/${path[path.length - 1]}`.trim();
     }
   }
 }

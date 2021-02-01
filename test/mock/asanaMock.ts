@@ -9,7 +9,8 @@ export default (): asana.Client => {
       data: [
         {
           gid: '1111111111',
-          name: 'testName',
+          name: `clients_name, company_name / job_post_title 
+          // (developers_name platform_name)`,
           resource_type: 'task',
         } as IResponseFullTask,
       ],
@@ -31,7 +32,8 @@ export default (): asana.Client => {
   asanaMock.tasks.getTask = async (): Promise<IResponseFullTask> => {
     return {
       gid: '1111111111',
-      name: 'testName',
+      name: `clients_name, company_name / job_post_title 
+      // (developers_name platform_name)`,
       resource_type: 'task',
       completed: true,
     } as IResponseFullTask;
