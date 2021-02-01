@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Logger from '../../logger';
 import config from '../../config/index';
+import gcs from '../../loaders/googleCloudStorage';
 import { Bucket, Storage } from '@google-cloud/storage';
 
 export default class GcsService {
@@ -11,12 +12,7 @@ export default class GcsService {
 
   constructor() {
     this.pathDir = path.resolve(__dirname, '../../../csv/');
-
-    const asanaFilePath = path.resolve(__dirname, `../../../${config.GCS.FILE_NAME}`);
-    this.storage = new Storage({
-      projectId: config.GCS.PROJECT_ID,
-      keyFilename: asanaFilePath,
-    });
+    this.storage = gcs();
   }
 
   async loadCsvInGcs(readFile: string, writeFile: string): Promise<void> {
