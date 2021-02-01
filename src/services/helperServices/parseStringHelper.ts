@@ -1,4 +1,4 @@
-export default class ParseStringService {
+export default class ParseStringHelper {
   static removeSymbolsInString(
     value: string | Record<string, unknown> | number
   ): string | Record<string, unknown> | number {

@@ -10,7 +10,6 @@ async function startServer(): Promise<void> {
   } catch (e) {
     Logger.error(e);
   }
-
   app.listen(config.PORT, () => {
     Logger.info(`port: ${config.PORT}`);
   });

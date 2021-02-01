@@ -1,7 +1,7 @@
 import asana from 'asana';
 import config from '../../config';
 import Logger from '../../logger';
-import DateService from '../helperServices/dateService';
+import DateHelper from '../helperServices/dateHelper';
 import { Container, Service } from 'typedi';
 import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../../interfaces/asanaApi';
 
@@ -9,11 +9,11 @@ import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../..
 export default class AsanaRequestService {
   private client: asana.Client;
 
-  private dateService: DateService;
+  private dateService: DateHelper;
 
   constructor(client: asana.Client) {
     this.client = client;
-    this.dateService = Container.get(DateService);
+    this.dateService = Container.get(DateHelper);
   }
 
   public async getTasks(params: IGetTaskListParams): Promise<ITasks> {

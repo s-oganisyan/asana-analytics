@@ -4,16 +4,16 @@ import { Writable } from 'stream';
 import { IApiEntity, IResponseFullTask } from '../../interfaces/asanaApi';
 
 export default class WriteCsvUsersService implements WriteCsv {
-  private readonly file: Writable;
+  public readonly file: Writable;
 
   private users: string[] = [];
 
-  private readonly nameCsv: string = 'users';
+  readonly nameCsv: string = 'users';
 
-  private readonly fields: string = 'gid;name;resource_type \n';
+  private readonly fields: string = 'gid;name;resource_type\n';
 
-  constructor() {
-    this.file = new CreateCsvService().createCsv(this.nameCsv);
+  constructor(dirName: string) {
+    this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);
     this.file.write(this.fields);
   }
 
@@ -35,7 +35,7 @@ export default class WriteCsvUsersService implements WriteCsv {
     }
     this.checkExistRecordAndWrite(
       userField.gid,
-      `${userField.gid.trim()};${userField.name.trim()};${userField.resource_type.trim()} \n`
+      `${userField.gid.trim()};${userField.name.trim()};${userField.resource_type.trim()}\n`
     );
   }
 

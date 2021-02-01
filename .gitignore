@@ -6,3 +6,4 @@ dist
 .idea
 csv
 csvTest
+gcs.json

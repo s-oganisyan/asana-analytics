@@ -1,19 +1,19 @@
 import asana from 'asana';
+import DateHelper from '../helperServices/dateHelper';
 import Logger from '../../logger';
-import DateService from '../helperServices/dateService';
 import AsanaRequestService from './asanaRequestService';
 import { Container, Service } from 'typedi';
 import { IApiEntity, IGetTaskListParams, IProject, IResponseFullTask, ITaskNameObj } from '../../interfaces/asanaApi';
 
 @Service()
 export default class AsanaMakeDataProjectsService {
-  private dateService: DateService;
+  private dateService: DateHelper;
 
   private asanaRequestService: AsanaRequestService;
 
   constructor(client: asana.Client) {
     this.asanaRequestService = new AsanaRequestService(client);
-    this.dateService = Container.get(DateService);
+    this.dateService = Container.get(DateHelper);
   }
 
   public async getProjectsTasks(isAllTasks = true): Promise<IProject[]> {
@@ -91,7 +91,7 @@ export default class AsanaMakeDataProjectsService {
   }
 
   private parseTicketsName(name: string): ITaskNameObj {
-    /* clients_name, company_name(если есть такая инфа) / job_post_title 
+    /* clients_name, company_name(если есть такая инфа) / job_post_title
   // (developers_name  platform_name agency(если присутствует слово agency, значит джоб на агентство))
   */
     const customer = name.slice(0, name.indexOf('/'));
