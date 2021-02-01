@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 import writeCsv from '../../interfaces/writeCsv';
-import DateService from '../helperServices/dateService';
+import DateHelper from '../helperServices/dateHelper';
 import WriteCsvTasksService from './writeCsvTasksService';
 import WriteCsvProjectsService from './writeCsvProjectsService';
 import { IProject, IResponseFullTask } from '../../interfaces/asanaApi';
@@ -23,14 +23,15 @@ export default class WriteCsvService {
 
   public async writeCsv(projectTasks: IProject[]): Promise<void> {
     this.csvServices = await this.getCsvServices();
-    this.writeCsvTasksService.writeTaskFields(projectTasks[0].tasks.data[0]);
+    this.writeCsvTasksService.writeTaskFields(this.csvServices, projectTasks[0].tasks.data[0]);
 
     projectTasks.forEach((project) => {
-      this.writeCsvProjectsService.setProjectName(project.projectName);
-
       project.tasks.data.forEach((task: IResponseFullTask) => {
         this.fixPropertyDateTask(task);
         this.csvServices.forEach((service: writeCsv) => {
+          if (service.nameCsv === 'projects') {
+            service.setProjectName(project.projectName);
+          }
           service.write(task);
         });
       });
@@ -41,7 +42,7 @@ export default class WriteCsvService {
     const properties = Object.keys(task);
     properties.forEach((property) => {
       if (task[property] != null && (property.endsWith('_at') || property.endsWith('_on'))) {
-        task[property] = DateService.changeTimezone(task[property]);
+        task[property] = DateHelper.changeTimezone(task[property]);
       }
     });
   }

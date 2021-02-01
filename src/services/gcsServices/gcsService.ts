@@ -37,7 +37,7 @@ export default class GcsService {
           Logger.error(err.message);
         })
         .on('finish', () => {
-          Logger.info('Done');
+          Logger.info(`Done ${writeFile}`);
         })
     );
   }

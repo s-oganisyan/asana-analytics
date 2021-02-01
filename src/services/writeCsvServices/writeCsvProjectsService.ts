@@ -4,13 +4,13 @@ import { Writable } from 'stream';
 import { IResponseFullTask } from '../../interfaces/asanaApi';
 
 export default class WriteCsvProjectsService implements WriteCsv {
-  private readonly file: Writable;
+  public readonly file: Writable;
 
   private projectName: string;
 
-  private readonly nameCsv: string = 'projects';
+  readonly nameCsv: string = 'projects';
 
-  private readonly fields: string = 'project_name;task_gid \n';
+  private readonly fields: string = 'project_name;task_gid\n';
 
   constructor(dirName: string) {
     this.file = new CreateCsvService(dirName).createCsv(this.nameCsv);
@@ -18,7 +18,7 @@ export default class WriteCsvProjectsService implements WriteCsv {
   }
 
   write(task: IResponseFullTask): void {
-    this.file.write(`${this.projectName};${task.gid} \n`);
+    this.file.write(`${this.projectName};${task.gid}\n`);
   }
 
   setProjectName(projectName: string): void {
