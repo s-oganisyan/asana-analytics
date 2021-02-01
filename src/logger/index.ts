@@ -32,7 +32,7 @@ export default class Logger {
       throw new Error();
     } catch (e) {
       const path = e.stack
-        .split('at')[4]
+        .split('at')[2]
         .match(/\((.*)\)/)[1]
         .split(/\\|\//);
       return `${path[path.length - 2]}/${path[path.length - 1]}`;
