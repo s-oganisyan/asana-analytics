@@ -3,7 +3,7 @@ import express from 'express';
 import config from '../config';
 import Logger from '../logger';
 import loaders from '../loaders';
-import writeCsvForParseName from '../services/writeCsvServices/writeCsvForParseName';
+import WriteCsvService from '../services/writeCsvServices/writeCsvService';
 import AsanaMakeDataProjects from '../services/asanaServices/asanaMakeDataProjectsService';
 
 async function startServer(): Promise<void> {
@@ -17,8 +17,8 @@ async function startServer(): Promise<void> {
   try {
     const client = asana.Client.create().useAccessToken(config.ASANA.PERSONAL_ACCESS_TOKEN);
     const asanaMakeDataProjects = new AsanaMakeDataProjects(client);
-    const tasksOfProjects = await asanaMakeDataProjects.getProjectsTasksTest();
-    const writeCsvService = new writeCsvForParseName();
+    const tasksOfProjects = await asanaMakeDataProjects.getProjectsTasks();
+    const writeCsvService = new WriteCsvService();
     writeCsvService.writeCsv(tasksOfProjects);
     Logger.info(`script executed `);
   } catch (e) {

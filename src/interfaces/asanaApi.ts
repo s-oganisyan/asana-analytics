@@ -26,12 +26,6 @@ export interface IResponseFullTask {
   tags: IApiEntity[];
   resource_subtype: string;
   workspace: IApiEntity;
-  client: string;
-  company: string;
-  job_title: string;
-  developer: string;
-  platform: string;
-  agency: boolean;
 }
 
 export interface IApiEntity {

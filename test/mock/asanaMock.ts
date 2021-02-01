@@ -36,12 +36,6 @@ export default (): asana.Client => {
       // (developers_name platform_name)`,
       resource_type: 'task',
       completed: true,
-      agency: false,
-      client: 'clients_name',
-      company: 'company_name',
-      developer: 'developers_name',
-      job_title: 'job_post_title',
-      platform: 'platform_name',
     } as IResponseFullTask;
   };
 
