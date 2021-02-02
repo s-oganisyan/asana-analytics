@@ -69,3 +69,27 @@ export interface ITaskNameObj {
   platform: string;
   agency: boolean;
 }
+
+export interface INewTask {
+  name: string;
+  workspace: string;
+  projects: string[];
+  notes?: string;
+  assignee?: string | null;
+  completed?: boolean;
+  completed_at?: string | null;
+  due_on?: string | null;
+  due_at?: string | null;
+  resource_subtype?: string;
+  start_on: string | null;
+  tags: string[];
+  num_hearts: number;
+  num_likes: number;
+  parent: string[] | null;
+  hearted: boolean;
+  hearts: string[];
+  liked: false;
+  likes: string[];
+  followers: string[];
+  assignee_status: string;
+}
