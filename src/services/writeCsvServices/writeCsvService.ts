@@ -49,7 +49,7 @@ export default class WriteCsvService {
 
   private async getCsvServices(): Promise<writeCsv[]> {
     const fileNames = await fs.readdir(__dirname);
-    const currentPathFile = __filename.split('/');
+    const currentPathFile = __filename.split(/\/|\\/);
     const csvServices: writeCsv[] = [];
 
     fileNames

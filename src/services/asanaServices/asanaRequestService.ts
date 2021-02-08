@@ -3,7 +3,8 @@ import config from '../../config';
 import Logger from '../../logger';
 import DateHelper from '../helperServices/dateHelper';
 import { Container, Service } from 'typedi';
-import { IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks } from '../../interfaces/asanaApi';
+import {IResponseFullTask, IApiEntity, IGetTaskListParams, ITasks, INewTask} from '../../interfaces/asanaApi';
+import {cachedDataVersionTag} from "v8";
 
 @Service()
 export default class AsanaRequestService {
@@ -44,5 +45,13 @@ export default class AsanaRequestService {
       Logger.error(error);
       throw error;
     }
+  }
+
+  public async deleteTask(gid: string) {
+    await this.client.tasks.delete(gid);
+  }
+
+  public async createTask(newTask: INewTask) {
+    const task = await this.client.tasks.createTask(newTask);
   }
 }
